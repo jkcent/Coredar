@@ -8,7 +8,7 @@ public class CheckGrounded : MonoBehaviour {
 
     private void OnTriggerExit(Collider other) {
         if (other.gameObject.tag == "Ground") {
-            PlayerMovement.isGrounded = false;
+            PlayerManager.isGrounded = false;
             playerRb.useGravity = true;
             //Debug.Log("Not Grounded");
         }
@@ -16,7 +16,7 @@ public class CheckGrounded : MonoBehaviour {
 
     private void OnTriggerStay(Collider other) {
         if (other.gameObject.tag == "Ground") {
-            PlayerMovement.isGrounded = true;
+            PlayerManager.isGrounded = true;
             playerRb.useGravity = false;
             //Debug.Log("Grounded");
         }

@@ -7,7 +7,7 @@ public class Weapon : MonoBehaviour {
 
     private KeyCode attackKey;
     private Animator animator;
-    [Header("Logic")]
+    [Header("Objects & Components")]
     public Transform cam;
     public LayerMask entity;
     [Header("Stats")]
@@ -47,7 +47,7 @@ public class Weapon : MonoBehaviour {
                 }
             }
             //Debug.Log(dmg.ToString());
-            target.Damage(dmg);
+            target.TakeDamage(dmg);
         }
     }
 }

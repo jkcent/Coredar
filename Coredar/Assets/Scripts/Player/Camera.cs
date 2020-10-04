@@ -7,5 +7,6 @@ public class Camera : MonoBehaviour {
 
     void Update() {
         transform.SetPositionAndRotation(head.position, head.rotation);
+        //transform.position = head.position;
     }
 }

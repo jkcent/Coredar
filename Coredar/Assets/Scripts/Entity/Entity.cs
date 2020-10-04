@@ -12,9 +12,13 @@ public class Entity : MonoBehaviour {
     public Material testDead;
     public Rigidbody rb;
     public GameObject player;
+    public Transform attackOrigin;
     public float moveSpd = 200f;
     public float range = 5f;
     public float attackRange = 1.5f;
+    public float attackSpeed = 1f;
+    public float minAttackDamage = 8f;
+    public float maxAttackDamage = 10f;
 
     private void Start() {
         if (nuetral)
@@ -40,12 +44,14 @@ public class Entity : MonoBehaviour {
     void CheckHealth() {
         if (health <= 0) {
             isDead = true;
-            GetComponent<MeshRenderer>().material = testDead;
+            MeshRenderer renderer = GetComponent<MeshRenderer>();
+            renderer.material = testDead;
         } else {
             isDead = false;
         }
     }
 
+    float elapsedTime = 0f;
     void MoveTowardsPlayer() {
         float dist = Vector3.Distance(player.transform.position, transform.position);
         Vector3 dir = player.transform.position - transform.position;
@@ -53,8 +59,14 @@ public class Entity : MonoBehaviour {
         dir.y = 0;
         transform.forward = dir;
         //Debug.Log(dist);
-        if (dist >= 1.5f && dist <= range) {
+        if (dist >= attackRange && dist <= range) {
             rb.velocity = transform.forward * Time.deltaTime * moveSpd;
+        } else if (dist <= attackRange) {
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= attackSpeed) {
+                Attack();
+                elapsedTime = elapsedTime % attackSpeed;
+            }
         }
     }
 
@@ -66,5 +78,19 @@ public class Entity : MonoBehaviour {
             if (!angry)
                 angry = true;
         } 
+    }
+
+    public void Attack() {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange)) {
+            if (hit.collider.tag == "Player") { // (hit.collider.gameObject.layer == Entity && hit.collider.gameObject != gameObject) for all entities
+                PlayerManager player = hit.collider.gameObject.GetComponent<PlayerManager>();
+                if (player == null) {
+                    return;
+                }
+                float attackDamage = Mathf.Floor(Random.Range(minAttackDamage, maxAttackDamage + 1));
+                player.TakeDamage(attackDamage);
+            }
+        }
     }
 }

@@ -9,13 +9,13 @@ public class SettingsMenu : MonoBehaviour {
     public Text sensVal;
 
     private void Start() {
-        float sensitivity = Mathf.FloorToInt(Settings.sensitivity);
-        sens.value = sensitivity;
-        sensVal.text = sensitivity.ToString();
+        float sensitivity = Settings.sensitivity;
+        sens.value = sensitivity * 100;
+        sensVal.text = (sensitivity * 100).ToString();
     }
 
     public void SetSensitivity() {
-        Settings.sensitivity = sens.value;
+        Settings.sensitivity = sens.value / 100;
         sensVal.text = sens.value.ToString();
     }
 }

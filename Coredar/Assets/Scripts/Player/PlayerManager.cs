@@ -1,18 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class PlayerManager : MonoBehaviour {
 
     public Transform head;
     public Transform isGroundedPos;
-    public Rigidbody rb;
+    public CharacterController controller;
     public GameObject menu;
-    private float moveSpd = 200;
-    private float jumpForce = 300;
+    [SerializeField] private float moveSpd = 10;
+    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float jumpHeight = 3f;
+    [SerializeField] private float pushPower = 3f;
     private float xRotation = 0f;
     public bool isGrounded = false;
     bool jump = false;
+    private bool dead = false;
 
     void Start() {
         /* Variables */
@@ -26,14 +30,25 @@ public class PlayerManager : MonoBehaviour {
 
     void Update() {
         CheckStats();
-        Debug.Log(Stats.health.finalValue);
-        #region Pause
-        if (!Settings.paused) {
+        //Debug.Log(Stats.health.finalValue);
+        /*
+        if (Input.GetKeyDown(KeyCode.G)) {
+            TakeDamage(10f);
+        }*/
+        #region Pause Update
+        if (!Settings.paused && !dead) {
             GetExtraInput();
             Look();
+            Move();
+            if (Cursor.visible && !Settings.paused) {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         } else {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            if (!Cursor.visible) {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
         }
         //
         if (Input.GetKeyDown(Settings.pauseKey)) {
@@ -45,32 +60,32 @@ public class PlayerManager : MonoBehaviour {
                 menu.SetActive(true);
             }
         }
-        #endregion
+        #endregion 
     }
 
     void FixedUpdate() {
-        if (!Settings.paused) {
-            Move();
+        #region Pause FixedUpdate
+        if (!Settings.paused && !dead) {
             Jump();
         }
+        #endregion
     }
     #region Movement
-
-    float ClampAngle(float angle, float from, float to) {
-        // accepts e.g. -80, 80
-        if (angle < 0f)
-            angle = 360 + angle;
-        if (angle > 180f)
-            return Mathf.Max(angle, 360 + from);
-        return Mathf.Min(angle, to);
-    }
-
+    Vector3 velocity;
     void Move() {
         /* Input */
         float xMomentum = Input.GetAxisRaw("Horizontal") * moveSpd * Time.deltaTime;
         float zMomentum = Input.GetAxisRaw("Vertical") * moveSpd * Time.deltaTime;
+        //float xMomentum = Input.GetAxisRaw("Horizontal") * moveSpd * Time.deltaTime;
+        //float zMomentum = Input.GetAxisRaw("Vertical") * moveSpd * Time.deltaTime;
         /* Move */
+        if (isGrounded && velocity.y <= 0) {
+            velocity.y = -2f;
+        }
+
         Vector3 momentum = transform.right * xMomentum + transform.forward * zMomentum;
+        #region
+        /*
         if (xMomentum != 0 && zMomentum != 0) {
             Mathf.Sqrt(momentum.x);
             Mathf.Sqrt(momentum.z);
@@ -79,22 +94,29 @@ public class PlayerManager : MonoBehaviour {
             rb.velocity = new Vector3(momentum.x, rb.velocity.y, momentum.z);
         else if (isGrounded)
             rb.velocity = new Vector3(momentum.x, 0f, momentum.z);
+        */
+        #endregion
+        controller.Move(momentum);
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
     }
 
     void CheckGrounded() {
         isGrounded = false;
         Collider[] collisions = Physics.OverlapSphere(isGroundedPos.position, 0.4f);
         for (int i = 0; i < collisions.Length; i++) {
-            if (collisions[i].tag != "Player")
+            if (collisions[i].tag != "Player") {
                 isGrounded = true;
+                break;
+            }
         }
-        rb.useGravity = !isGrounded;
+        //rb.useGravity = !isGrounded;
     }
 
     void Jump() {
         /* Jump */
         if (jump) {
-            rb.AddForce(new Vector3(0f, jumpForce));
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
         CheckGrounded();
     }
@@ -110,33 +132,43 @@ public class PlayerManager : MonoBehaviour {
     }
 
     void Look() {
-        /*
-        float mouseX = Input.GetAxisRaw("Mouse X") * Settings.sensitivity * Time.deltaTime;
-        float mouseY = -Input.GetAxisRaw("Mouse Y") * Settings.sensitivity * Time.deltaTime;
+        float mouseX = Input.GetAxisRaw("Mouse X") * Settings.sensitivity;
+        float mouseY = -Input.GetAxisRaw("Mouse Y") * Settings.sensitivity;
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         head.transform.localRotation = Quaternion.Euler(-xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
-        */
-        float mouseHorizontalRotation = Input.GetAxis("Mouse X") * Settings.sensitivity * Time.deltaTime;
-        transform.Rotate(0, mouseHorizontalRotation, 0);
-
-        xRotation -= Input.GetAxis("Mouse Y") * Settings.sensitivity * Time.deltaTime;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        head.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
     }
     #endregion
+    #region Push Rigidbodies
+    /*
+    void OnControllerColliderHit(ControllerColliderHit hit) {
+        Rigidbody body = hit.collider.attachedRigidbody;
+        //
+        if (body == null || body.isKinematic)
+            return;
+        if (hit.moveDirection.y < -0.3)
+            return;
+        //
+        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0f, hit.moveDirection.z);
+        body.velocity = pushDir * pushPower;
+    }
+    */
+    #endregion
     #region Stats
-    void TakeDamage(float damage) {
-        float defence = Stats.defence.finalValue;
-        float scale = 128; // Decrase to make steeper curve
-        Stats.health.finalValue -= Mathf.CeilToInt(damage/Mathf.Exp(defence / scale));
+    public void TakeDamage(float damage) {
+        if (!dead) {
+            float defence = Stats.defence.finalValue;
+            float scale = 128; // Decrease to make steeper curve
+            Stats.health.finalValue -= Mathf.CeilToInt(damage/Mathf.Exp(defence / scale));
+            Debug.Log(Mathf.CeilToInt(damage / Mathf.Exp(defence / scale)));
+        }
     }
     void CheckStats() {
         if (Stats.health.finalValue <= 0) {
-            tag = "Dead";
+            dead = true;
         }
     }
     /*

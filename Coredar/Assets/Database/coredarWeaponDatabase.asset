@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c534853ad83d2a643b610a8d288e7e14, type: 3}
   m_Name: coredarWeaponDatabase
   m_EditorClassIdentifier: 
-  database: []
+  database:
+  - _name: Short Sword
+    _value: 1
+    _quality:
+      _name: Legendary
+      _color: {r: 1, g: 0.86910975, b: 0, a: 0}
+    _icon: {fileID: 0}
+    _minDamage: 20
+    _prefab: {fileID: 1973189589764979981, guid: 76bcb9effc8100447a5d70ff9d40e4be, type: 3}
+    _equipmentSlot: 4

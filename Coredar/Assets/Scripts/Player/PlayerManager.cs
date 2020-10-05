@@ -9,10 +9,10 @@ public class PlayerManager : MonoBehaviour {
     public Transform isGroundedPos;
     public CharacterController controller;
     public GameObject menu;
-    [SerializeField] private float moveSpd = 10;
+    [SerializeField] private float moveSpd = 4; // 4
     [SerializeField] private float gravity = -9.81f;
-    [SerializeField] private float jumpHeight = 3f;
-    [SerializeField] private float pushPower = 3f;
+    [SerializeField] private float jumpHeight = 1f; // 1
+    //[SerializeField] private float pushPower = 3f;
     private float xRotation = 0f;
     public bool isGrounded = false;
     bool jump = false;
@@ -103,9 +103,15 @@ public class PlayerManager : MonoBehaviour {
 
     void CheckGrounded() {
         isGrounded = false;
-        Collider[] collisions = Physics.OverlapSphere(isGroundedPos.position, 0.4f);
+        Collider[] collisions = Physics.OverlapSphere(isGroundedPos.position, 0.48f);
         for (int i = 0; i < collisions.Length; i++) {
+            /*
             if (collisions[i].tag != "Player") {
+                isGrounded = true;
+                break;
+            }
+            */
+            if (collisions[i].tag == "Ground") {
                 isGrounded = true;
                 break;
             }

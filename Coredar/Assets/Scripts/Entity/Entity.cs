@@ -8,7 +8,7 @@ public class Entity : MonoBehaviour {
     private bool angry = false;
     public float health = 100f;
     public float defence = 0f;
-    private bool isDead = false;
+    private bool dead = false;
     public Material testDead;
     public Rigidbody rb;
     public GameObject player;
@@ -28,7 +28,7 @@ public class Entity : MonoBehaviour {
     }
 
     private void Update() {
-        if (angry) {
+        if (angry && !dead) {
             MoveTowardsPlayer();
             // Attack
         } else {
@@ -43,11 +43,11 @@ public class Entity : MonoBehaviour {
 
     void CheckHealth() {
         if (health <= 0) {
-            isDead = true;
+            dead = true;
             MeshRenderer renderer = GetComponent<MeshRenderer>();
             renderer.material = testDead;
         } else {
-            isDead = false;
+            dead = false;
         }
     }
 
@@ -71,7 +71,7 @@ public class Entity : MonoBehaviour {
     }
 
     public void TakeDamage(float damage) {
-        if (!isDead) {;
+        if (!dead) {
             float scale = 128; // Decrase to make steeper curve
             health -= Mathf.CeilToInt(damage / Mathf.Exp(defence / scale));
             Debug.Log(health);

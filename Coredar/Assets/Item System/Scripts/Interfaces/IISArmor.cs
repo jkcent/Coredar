@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Coredar.ItemSystem {
-    public interface IISWeapon {
+    public interface IISArmor {
 
-        Vector2 damage { get; set; }
-        void Attack();
-        // range, etc.
+        int defense { get; set; }
     }
 }

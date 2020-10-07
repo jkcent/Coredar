@@ -7,11 +7,11 @@ namespace Coredar.ItemSystem {
 
         [SerializeField] string _name;
         [SerializeField] Sprite _icon;
-        [SerializeField] Texture2D tex;
+        [SerializeField] Texture2D _tex = new Texture2D(0, 0);
 
         public ISEquipmentSlot() {
             _name = "Name Me";
-            _icon = Sprite.Create(tex, new Rect(0f, 0f, 0f, 0f), Vector2.zero);
+            _icon = Sprite.Create(_tex, new Rect(0f, 0f, 0f, 0f), Vector2.zero);
         }
 
         public string name { 

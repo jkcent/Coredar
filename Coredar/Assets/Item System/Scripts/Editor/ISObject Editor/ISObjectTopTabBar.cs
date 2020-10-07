@@ -1,28 +1,47 @@
-﻿using System.Collections;
+﻿#if UNITY_EDITOR
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Coredar.ItemSystem.Editor {
     public partial class ISObjectEditor {
+
+        enum TabState {
+            WEAPON,
+            ARMOR,
+            CONSUMABLES,
+            ABOUT
+        }
+
+        TabState tabState;
+
         void TopTabBar() {
             GUILayout.BeginHorizontal("Box",GUILayout.ExpandWidth(true));
 
             WeaponsTab();
             ArmorTab();
-            GUILayout.Button("Potions");
+            ConsumablesTab();
             AboutTab();
 
             GUILayout.EndHorizontal();
         }
 
         void WeaponsTab() {
-            GUILayout.Button("Weapons");
+            if (GUILayout.Button("Weapons"))
+                tabState = TabState.WEAPON;
         }
         void ArmorTab() {
-            GUILayout.Button("Armor");
+            if (GUILayout.Button("Armor"))
+                tabState = TabState.ARMOR;
+        }
+        void ConsumablesTab() {
+            if (GUILayout.Button("Consumables"))
+                tabState = TabState.CONSUMABLES;
         }
         void AboutTab() {
-            GUILayout.Button("About");
+            if (GUILayout.Button("About"))
+                tabState = TabState.ABOUT;
         }
     } 
 }
+#endif

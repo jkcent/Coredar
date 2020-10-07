@@ -1,62 +1,82 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
-using System;
+#endif
 
 namespace Coredar.ItemSystem {
     [System.Serializable]
     public class ISWeapon : ISObject, IISWeapon, IISGameObject { // Maybe Destructable
 
 
-        [SerializeField] int _minDamage;
-        //[SerializeField] ISEquipmentSlot _equipmentSlot;
+        [SerializeField] Vector2 _damage; // x is min y is max
         [SerializeField] GameObject _prefab;
 
-        public EquipmentSlot _equipmentSlot;
+        public EquipmentSlot equipmentSlot;
+        public WeaponType weaponType;
 
         public ISWeapon() {
-            //_equipmentSlot = new ISEquipmentSlot();
+            equipmentSlot = EquipmentSlot.Weapon;
         }
 
-        public ISWeapon(GameObject prefab) {
-            //_equipmentSlot = equipmentSlot;
-            _prefab = prefab;
+        public ISWeapon(ISWeapon weapon) {
+            Clone(weapon);
         }
         
-        public int minDamage { 
+        public void Clone(ISWeapon weapon) {
+            base.Clone(weapon);
+            equipmentSlot = weapon.equipmentSlot;
+            weaponType = weapon.weaponType;
+            _damage = weapon.damage;
+            _prefab = weapon.prefab;
+        }
+
+        public Vector2 damage { 
             get {
-                return _minDamage;
+                return _damage;
             }
             set {
-                _minDamage = value;
+                _damage = value;
             }
         }
         
-        public int Attack() {
+        public void Attack() {
             throw new System.NotImplementedException();
         }
-        
+
         public GameObject prefab { 
             get {
                 return _prefab;
             }
         }
-
+        #if UNITY_EDITOR
         public override void OnGUI() {
             base.OnGUI();
 
-            _minDamage = EditorGUILayout.IntField("Damage", _minDamage);
+            DisplayDamage();
             DisplayEquipmentSlot();
+            DisplayWeaponType(); 
             DisplayPrefab();
         }
 
+        public void DisplayDamage() {
+            _damage.x = EditorGUILayout.IntField("Min Damage", (int) _damage.x);
+            _damage.y = EditorGUILayout.IntField("Max Damage", (int) _damage.y);
+        }
+
         public void DisplayEquipmentSlot() {
-            _equipmentSlot =  (EquipmentSlot)EditorGUILayout.EnumPopup("Equipment Slot", _equipmentSlot);
+            equipmentSlot = (EquipmentSlot)EditorGUILayout.EnumPopup("Equipment Slot", equipmentSlot);
+        }
+
+        public void DisplayWeaponType() {
+            weaponType = (WeaponType)EditorGUILayout.EnumPopup("Weapon Type", weaponType);
         }
 
         public void DisplayPrefab() {
             _prefab = EditorGUILayout.ObjectField("Prefab", _prefab, typeof(GameObject), false) as GameObject;
         }
+        #endif
     }
 }

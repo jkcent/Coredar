@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace Coredar.ItemSystem {
     [System.Serializable]
-    public enum EquipmentSlot {
-        Head,
-        Torso,
-        Leg,
-        Feet,
-        Weapon
+    public enum WeaponType {
+        Heavy,
+        Light,
+        Dagger,
+        ShortSword,
+        BroadSword
     };
 }
+   

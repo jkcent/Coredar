@@ -242,7 +242,7 @@ MonoBehaviour:
   isGroundedPos: {fileID: 1190939854}
   controller: {fileID: 52953559}
   menu: {fileID: 147658249}
-  moveSpd: 200
+  moveSpd: 50
   gravity: -39.24
   jumpHeight: 200
   isGrounded: 0
@@ -718,7 +718,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826034661}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 119.53, z: 0}
+  m_LocalPosition: {x: 0, y: 188, z: 469.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 52953555}

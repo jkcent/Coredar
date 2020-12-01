@@ -20,7 +20,7 @@ public class Attack : MonoBehaviour {
 
 
     void Update() {
-        if (!Settings.paused) {
+        if (!Settings.paused && !Settings.inInventory && !Settings.inNPCMenu) {
             if (Input.GetKeyDown(attackKey)) {
                 CheckAttack();
             }
@@ -31,7 +31,7 @@ public class Attack : MonoBehaviour {
         animator.SetTrigger("Attack");
         /* Hit */
         RaycastHit hit;
-        if (Physics.Raycast(cam.position, cam.TransformDirection(Vector3.forward), out hit, range, entity)) {
+        if (Physics.Raycast(cam.position, cam.TransformDirection(Vector3.forward), out hit, range, entity)) { // make head instead of cam
             Entity target = hit.collider.gameObject.GetComponent<Entity>();
             if (target == null)
                 return;

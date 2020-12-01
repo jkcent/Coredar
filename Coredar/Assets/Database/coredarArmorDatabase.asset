@@ -12,4 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90643d006e39c2141836244db5c014c2, type: 3}
   m_Name: coredarArmorDatabase
   m_EditorClassIdentifier: 
-  database: []
+  database:
+  - _name: Head
+    _value: 0
+    _quality:
+      _name: Legendary
+      _color: {r: 1, g: 0.86910975, b: 0, a: 0}
+    _icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    _defense: 0
+    _prefab: {fileID: 0}
+    equipmentSlot: 0
+    armorType: 0
+  - _name: Chest
+    _value: 0
+    _quality:
+      _name: Epic
+      _color: {r: 0.4583063, g: 0, b: 1, a: 0}
+    _icon: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    _defense: 0
+    _prefab: {fileID: 0}
+    equipmentSlot: 1
+    armorType: 0
+  - _name: Leg
+    _value: 0
+    _quality:
+      _name: Rare
+      _color: {r: 0, g: 0.1493411, b: 1, a: 0}
+    _icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    _defense: 0
+    _prefab: {fileID: 0}
+    equipmentSlot: 2
+    armorType: 0
+  - _name: Foot
+    _value: 0
+    _quality:
+      _name: Uncommon
+      _color: {r: 0, g: 1, b: 0, a: 0}
+    _icon: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+    _defense: 0
+    _prefab: {fileID: 0}
+    equipmentSlot: 3
+    armorType: 0

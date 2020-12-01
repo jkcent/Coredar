@@ -4,18 +4,18 @@ using UnityEngine;
 
 public static class Skills {
     #region Skills
-    public static Skill playerLvl  = new Skill(1, 0, "Level", "*DO NOT SHOW DESCRIPTION* This is the player's level, used Skill struct becuase skills have the same formatting, Big Horse Cock");
-    public static Skill tracking   = new Skill(1, 0, "Tracking", "Track entites from farther distance and with higher stealth skills.\nFind stronger weak points.");
-    public static Skill detection  = new Skill(1, 0, "Detection", "Locate higher rarity treasure.");
-    public static Skill taming     = new Skill(1, 0, "Taming", "Tame higher level beasts when \"Beast Master\" perk is equipped.");
-    public static Skill cooking    = new Skill(1, 0, "Cooking", "Allows you to cook higher quality foods.");
-    public static Skill smithing   = new Skill(1, 0, "Smithing", "Create higher quality gear. \nAnalyze higher rarity unanalyzed gear.");
-    public static Skill herbalist  = new Skill(1, 0, "Herbalist", "Brew higher quality potions. \nGrow higher rarity crops.");
-    public static Skill combat     = new Skill(1, 0, "Combat", "Increases the player's damage stat.");
-    public static Skill agility    = new Skill(1, 0, "Agility", "Increases the player's speed stat. \nIncreases dodge chance.");
-    public static Skill dungeoneer = new Skill(1, 0, "Dungeoneer", "The highest accessable dungeon to you.");
-    public static Skill fishing    = new Skill(1, 0, "Fishing", "Catch higher quality fish.");
-    public static Skill magic      = new Skill(1, 0, "Magic", "Increases the player's theiving stat. \nMakes enchanted gear stronger.");
+    public static Skill playerLvl  = new Skill(1, 0, "Level",                                                       "*DO NOT SHOW DESCRIPTION* BIG\nHORSE\nCOCK\n...");
+    public static Skill tracking   = new Skill(1, 0, "Tracking",                                "Track entites from farther distance and with higher stealth skills.");
+    public static Skill detection  = new Skill(1, 0, "Detection",                                                                    "Locate higher rarity treasure.");
+    public static Skill taming     = new Skill(1, 0, "Taming", "Tame higher level passive beasts.\nIf \"Beast Master\" perk is equipped hostile beasts can be tamed."); 
+    public static Skill cooking    = new Skill(1, 0, "Cooking",                                                            "Allows you to cook higher quality foods.");
+    public static Skill smithing   = new Skill(1, 0, "Smithing",                                "Create higher quality gear.\nAnalyze higher rarity unanalyzed gear.");
+    public static Skill herbalist  = new Skill(1, 0, "Herbalist",                                           "Brew higher quality potions.\nGrow higher rarity crops.");
+    public static Skill combat     = new Skill(1, 0, "Combat",                                                                  "Increases the player's damage stat.");
+    public static Skill agility    = new Skill(1, 0, "Agility",                                         "Increases the player's speed stat.\nIncreases dodge chance.");
+    public static Skill dungeoneer = new Skill(1, 0, "Dungeoneer",                                                           "The highest accessable dungeon to you.");
+    public static Skill fishing    = new Skill(1, 0, "Fishing",                                                                          "Catch higher quality fish.");
+    public static Skill magic      = new Skill(1, 0, "Magic",                                 "Increases the player's theiving stat.\nMakes enchanted gear stronger.");
     #endregion
 }
 
@@ -42,13 +42,14 @@ public static class Stats {
     public static Stat theiving     = new Stat("Theiving",          1);
     public static Stat critChance   = new Stat("Crit Chance",       1);
     public static Stat trackingDist = new Stat("Stealth",           1);
+    public static Stat invSpace     = new Stat("Inventory Space", 100);
 }
 
 public struct Stat {
     
     public string name { get; }
     public int baseValue { get; set; }
-    public int finalValue { get; set; }
+    public int finalValue { get; set; } // For effects like strength, etc. do damage.finalValue = damage.baseValue * multiplier or something along that line
     //
     public Stat(string name, int baseValue) {
         this.name = name;

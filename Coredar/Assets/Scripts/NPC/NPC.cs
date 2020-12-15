@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum NPCType {
+[System.Serializable] enum NPCType {
     ShopKeeper  = 1,    // Owns Shop
     Quest       = 2,    // Gives Quests
     Dialog      = 3,    // Runs first interaction dialog and then generic dialog
@@ -12,12 +12,12 @@ public enum NPCType {
 public class NPC : MonoBehaviour {
 
     [Header("| = \\n")]
-    public NPCType npcType = NPCType.Dialog;
+    [SerializeField] NPCType npcType = NPCType.Dialog;
     public List<string> firstInteractionDialog = new List<string>();
     public List<string> genericDialog = new List<string>();
     public bool alreadyInteracted = false;
 
-    //public GameObject shop;
+    public GameObject shop;
     //public GameObject quest;
     public GameObject dialog;
 
@@ -94,7 +94,7 @@ public class NPC : MonoBehaviour {
     #endregion
     #region NPC type functions
     void OpenShop() {
-
+        shop.SetActive(true);
     }
 
     void OpenQuest() {

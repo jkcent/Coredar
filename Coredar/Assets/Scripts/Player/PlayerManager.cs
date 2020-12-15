@@ -7,7 +7,6 @@ public class PlayerManager : MonoBehaviour {
     #region variables
     [Header("----- Movement -----")]
     public Transform head;
-    public Transform isGroundedPos;
     public CharacterController controller;
     public GameObject menu;
     [SerializeField] private float moveSpd = 5; // 5 - 10
@@ -16,7 +15,6 @@ public class PlayerManager : MonoBehaviour {
     //[SerializeField] private float pushPower = 3f;
     //private float xRotation = 0f;
     bool jump = false;
-    private bool dead = false;
     public bool moving = false; 
     [Header("----- NPC -----")]
     public LayerMask NPCLayer;
@@ -35,7 +33,7 @@ public class PlayerManager : MonoBehaviour {
     void Update() {
         CheckStats();
         #region Pause/Inventory Update
-        if (!Settings.paused && !dead && !Settings.inInventory && !Settings.inNPCMenu) {
+        if (!Settings.paused && gameObject.tag != "Dead" && !Settings.inInventory && !Settings.inNPCMenu) {
             GetExtraInput();
             //Look();
             //Move();
@@ -81,7 +79,7 @@ public class PlayerManager : MonoBehaviour {
 
     void FixedUpdate() {
         #region Pause FixedUpdate
-        if (!Settings.paused && !Settings.inInventory && !Settings.inNPCMenu && !dead) {
+        if (!Settings.paused && !Settings.inInventory && !Settings.inNPCMenu && gameObject.tag != "Dead") {
             Jump();
         }
         #endregion
@@ -100,7 +98,7 @@ public class PlayerManager : MonoBehaviour {
     Vector3 velocity;
     void Move() {
         /* Input */
-        if (!Settings.paused && !Settings.inInventory && !Settings.inNPCMenu) {
+        if (!Settings.paused && !Settings.inInventory && !Settings.inNPCMenu && gameObject.tag != "Dead") {
             float xMomentum = Input.GetAxisRaw("Horizontal") * moveSpd * Time.deltaTime;
             float zMomentum = Input.GetAxisRaw("Vertical") * moveSpd * Time.deltaTime;
             //float xMomentum = Input.GetAxisRaw("Horizontal") * moveSpd * Time.deltaTime;
@@ -168,7 +166,7 @@ public class PlayerManager : MonoBehaviour {
     #endregion
     #region Stats
     public void TakeDamage(float damage) {
-        if (!dead) {
+        if (gameObject.tag != "Dead") {
             float defence = Stats.defence.finalValue;
             float scale = 128; // Decrease to make steeper curve
             Stats.health.finalValue -= Mathf.CeilToInt(damage/Mathf.Exp(defence / scale));
@@ -177,7 +175,7 @@ public class PlayerManager : MonoBehaviour {
     }
     void CheckStats() {
         if (Stats.health.finalValue <= 0) {
-            dead = true;
+            gameObject.tag = "Dead";
         }
     }
     /*

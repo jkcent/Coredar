@@ -6,12 +6,13 @@ public class Entity : MonoBehaviour {
 
     public bool nuetral = true;
     private bool angry = false;
+    public int level = 1;
     public float health = 100f;
     public float defence = 0f;
     private bool dead = false;
     public Material testDead;
-    public Rigidbody rb;
-    public GameObject player;
+    public CharacterController controller;
+    GameObject player;
     public Transform attackOrigin;
     public float moveSpd = 200f;
     public float range = 5f;
@@ -21,24 +22,83 @@ public class Entity : MonoBehaviour {
     public float maxAttackDamage = 10f;
 
     private void Start() {
+        player = GameObject.Find("Player");
+
         if (nuetral)
             angry = false;
         else
             angry = true;
     }
 
+    int state = 0;
+    float elapsedTime = 0f;
+    Vector3 playerLastPosition;
+    float boredTimer = 0f;
+    Vector3 velocity;
     private void Update() {
-        if (angry && !dead) {
-            MoveTowardsPlayer();
-            // Attack
-        } else {
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
+        if (angry) {
+            //MoveTowardsPlayer();
+            switch (state) {
+                case 0:
+                    #region Wander
+                    // Not locked, wandering or some shit idk
+                    FindPlayer(1);
+                    break;
+                    #endregion
+                case 1:
+                    #region Move Towards Player
+                    if (CheckSightLine(player.transform.position)) {
+                        float ppJajajaja = Vector3.Distance(player.transform.position, transform.position);
+                        if (ppJajajaja <= attackRange) {
+                            elapsedTime = 0;
+                            state = 3;
+                        } else {
+                            playerLastPosition = player.transform.position;
+                            Move(player.transform.position);
+                        }
+                    } else {
+                        boredTimer = 5f;
+                        state = 2;
+                    }
+                    break;
+                    #endregion
+                case 2:
+                    #region Move Toward Player Last Position
+                    float dist = Vector3.Distance(playerLastPosition, transform.position);
+                    if (dist <= range && dist > 0.25f && boredTimer > 0) {
+                        Move(playerLastPosition);
+                        boredTimer -= Time.deltaTime;
+                        FindPlayer(1);
+                    } else {
+                        state = 0;
+                    }
+                    break;
+                    #endregion
+                case 3:
+                    #region Attack
+                    elapsedTime += Time.deltaTime;
+                    if (elapsedTime >= attackSpeed) {
+                        Attack();
+                        state = 1;
+                    }
+                    break;
+                    #endregion
+                default:
+                    break;
+            }
         }
+        controller.Move(Physics.gravity);
     }
 
     private void LateUpdate() {
         CheckHealth();
+    }
+
+    void FindPlayer(int _state) {
+        if (CheckSightLine(player.transform.position)) {
+            playerLastPosition = player.transform.position;
+            state = _state;
+        }
     }
 
     void CheckHealth() {
@@ -51,23 +111,30 @@ public class Entity : MonoBehaviour {
         }
     }
 
-    float elapsedTime = 0f;
-    void MoveTowardsPlayer() {
-        float dist = Vector3.Distance(player.transform.position, transform.position);
-        Vector3 dir = player.transform.position - transform.position;
+    void Move(Vector3 target) {
+        Vector3 dir = target - transform.position;
         dir = dir.normalized;
         dir.y = 0;
         transform.forward = dir;
-        //Debug.Log(dist);
-        if (dist >= attackRange && dist <= range) {
-            rb.velocity = transform.forward * Time.deltaTime * moveSpd;
-        } else if (dist <= attackRange) {
-            elapsedTime += Time.deltaTime;
-            if (elapsedTime >= attackSpeed) {
-                Attack();
-                elapsedTime = elapsedTime % attackSpeed;
+        
+        Vector3 velocity = transform.forward * moveSpd * Time.deltaTime;
+        velocity.y = 0;
+        controller.Move(velocity);
+    }
+
+    bool CheckSightLine(Vector3 target) {
+        Vector3 dir = target - transform.position;
+
+        if (dir.magnitude <= range) {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, dir.normalized, out hit, range)) {
+                if (hit.collider.tag == "Player") {
+                    return true;
+                }
             }
         }
+
+        return false;
     }
 
     public void TakeDamage(float damage) {
@@ -88,7 +155,7 @@ public class Entity : MonoBehaviour {
                 if (player == null) {
                     return;
                 }
-                float attackDamage = Mathf.Floor(Random.Range(minAttackDamage, maxAttackDamage + 1));
+                float attackDamage = Mathf.Ceil(Random.Range(minAttackDamage - 0.9f, maxAttackDamage));
                 player.TakeDamage(attackDamage);
             }
         }

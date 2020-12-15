@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 714609826719764136}
   - component: {fileID: 714609826719764137}
   - component: {fileID: 714609826719764138}
-  - component: {fileID: 714609826719764142}
+  - component: {fileID: 1811807880}
   - component: {fileID: 714609826719764143}
   m_Layer: 8
   m_Name: Enemy
@@ -325,22 +325,24 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &714609826719764142
-Rigidbody:
+--- !u!143 &1811807880
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714609826719764132}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &714609826719764143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,15 +355,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7287e6a477ab2fd44819528d1e1f976b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nuetral: 1
+  nuetral: 0
+  level: 1
   health: 20
   defence: 100
   testDead: {fileID: 2100000, guid: ea32d15e4aba28b488ba5957b54c5eb1, type: 2}
-  rb: {fileID: 714609826719764142}
+  controller: {fileID: 1811807880}
   player: {fileID: 0}
   attackOrigin: {fileID: 714609826765585290}
-  moveSpd: 500
-  range: 5
+  moveSpd: 4
+  range: 20
   attackRange: 1.5
   attackSpeed: 1
   minAttackDamage: 8
@@ -419,7 +422,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714609827034166479}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.25, z: 3.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

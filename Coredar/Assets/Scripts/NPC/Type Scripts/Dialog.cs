@@ -6,7 +6,6 @@ using TMPro;
 public class Dialog : MonoBehaviour {
 
     public TMP_Text text;
-    public int charLimit = 10;
     float delay = 0.1f;
 
     List<string> queuedDialog = new List<string>();

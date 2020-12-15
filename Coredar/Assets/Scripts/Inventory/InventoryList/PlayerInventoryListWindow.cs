@@ -26,7 +26,7 @@ public class PlayerInventoryListWindow : MonoBehaviour {
         ClearGUIList();
     }
 
-    private void CreateInventorySlotsInWindow() {
+    void CreateInventorySlotsInWindow() {
         for (int i = 0; i < inventory.GetSlotsFilled(); i++) {
             ISObject item = inventory.GetItem(i);
             #region Positioning and Organizing
@@ -61,7 +61,7 @@ public class PlayerInventoryListWindow : MonoBehaviour {
         }
     }
 
-    private void ClearGUIList() {
+    void ClearGUIList() {
         foreach (GameObject listItem in activeSlots) {
             Destroy(listItem);
         }

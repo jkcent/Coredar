@@ -9,10 +9,10 @@ namespace Coredar.ItemSystem {
     [System.Serializable]
     public class ISObject : IISObject {
 
-    [SerializeField] string _name;
-    [SerializeField] int _value;
-    [SerializeField] ISQuality _quality;
-    [SerializeField] Sprite _icon;
+        [SerializeField] string _name;
+        [SerializeField] int _value;
+        [SerializeField] ISQuality _quality;
+        [SerializeField] Sprite _icon;
 
         public ISObject() {
         }

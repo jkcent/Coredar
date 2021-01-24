@@ -20,6 +20,32 @@ MonoBehaviour:
       _color: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0}
     _icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
     _damage: {x: 3, y: 5}
+    _attackRange: 0
+    _health: 0
+    _defence: 0
+    _strength: 0
+    _speed: 0
+    _dodgeChance: 0
+    _critChance: 0
+    _critDamage: 0
     _prefab: {fileID: 1973189589764979981, guid: 76bcb9effc8100447a5d70ff9d40e4be, type: 3}
     equipmentSlot: 4
     weaponType: 3
+  - _name: Bepis9000
+    _value: 928282828
+    _quality:
+      _name: Legendary
+      _color: {r: 1, g: 0.86910975, b: 0, a: 0}
+    _icon: {fileID: 21300000, guid: 73f2825f8d614f94a83a0f1a6bcb34f2, type: 3}
+    _damage: {x: 1000, y: 1000}
+    _attackRange: 0
+    _health: 0
+    _defence: 0
+    _strength: 0
+    _speed: 0
+    _dodgeChance: 0
+    _critChance: 0
+    _critDamage: 0
+    _prefab: {fileID: 919132149155446097, guid: d0a94b02a0550304897e05336e2fc7fe, type: 3}
+    equipmentSlot: 4
+    weaponType: 4

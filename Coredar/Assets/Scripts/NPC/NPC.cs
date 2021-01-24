@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable] enum NPCType {
-    ShopKeeper  = 1,    // Owns Shop
-    Quest       = 2,    // Gives Quests
-    Dialog      = 3,    // Runs first interaction dialog and then generic dialog
-    Generic     = 4,    // Only runs generic dialog
+    ShopKeeper,    // Owns Shop
+    Quest,         // Gives Quests
+    Dialog,        // Runs first interaction dialog and then generic dialog
+    Generic,       // Only runs generic dialog
 }
 
 public class NPC : MonoBehaviour {
@@ -17,19 +17,18 @@ public class NPC : MonoBehaviour {
     public List<string> genericDialog = new List<string>();
     public bool alreadyInteracted = false;
 
-    public GameObject shop;
     //public GameObject quest;
     public GameObject dialog;
 
     public void StartInteraction() {
         //Debug.Log("Interacting With NPC");
-        Settings.inNPCMenu = true;
+        Settings.paused = true;
         switch (npcType) {
             case NPCType.ShopKeeper:
                 if (!alreadyInteracted) {
-                    ShowFirstInteractionDialog();
+                    ShowFirstInteractionDialog(); // Goes to Menu
                 } else {
-                    ShowGenericDialog();
+                    ShowGenericDialog(); // For second Interaction
                 }
                 break;
             case NPCType.Quest:
@@ -64,7 +63,7 @@ public class NPC : MonoBehaviour {
             case NPCType.Generic:
                 break;
         }
-        Settings.inNPCMenu = false;
+        Settings.paused = false;
     }
     #region Dialog Functions
     void ShowFirstInteractionDialog() {
@@ -94,7 +93,7 @@ public class NPC : MonoBehaviour {
     #endregion
     #region NPC type functions
     void OpenShop() {
-        shop.SetActive(true);
+        GetComponent<Store>().CreateList();
     }
 
     void OpenQuest() {

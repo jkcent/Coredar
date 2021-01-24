@@ -5,8 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
-  - Entity
   - Dead
+  - NPC
   layers:
   - Default
   - TransparentFX

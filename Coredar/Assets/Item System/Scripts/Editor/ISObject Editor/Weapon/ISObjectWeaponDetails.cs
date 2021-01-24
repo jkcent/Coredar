@@ -50,14 +50,6 @@ namespace Coredar.ItemSystem.Editor {
                     showDetails = false;
                     _selectedIndex = -1;
                     GUI.FocusControl("SaveButton");
-
-                    //GameManager.GenerateItemList();
-                    GameManager manager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-                    if (manager == null) {
-                        Debug.Log("GameManager does not exist");
-                    } else {
-                        manager.GenerateItemList();
-                    }
                 }
 
                 if (_selectedIndex != -1) {
@@ -69,14 +61,6 @@ namespace Coredar.ItemSystem.Editor {
                             showDetails = false;
                             _selectedIndex = -1;
                             GUI.FocusControl("SaveButton");
-
-                            //GameManager.GenerateItemList();
-                            GameManager manager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-                            if (manager == null) {
-                                Debug.Log("GameManager does not exist");
-                            } else {
-                                manager.GenerateItemList();
-                            }
                         }
                     }
                 }

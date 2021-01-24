@@ -6,68 +6,85 @@ using Coredar.ItemSystem;
 
 public class Store : MonoBehaviour {
 
-    public int[] itemIndexes;
-    public List<ISObject> inventory = new List<ISObject>();
+    [Header("----- Databases -----")]
+    public ISWeaponDatabase weaponDb;
+    public ISArmorDatabase armorDb;
+    public ISConsumableDatabase consumablesDb;
+    [Header("----- Lists -----")]
+    public List<int> weaponIndexes = new List<int>();
+    public List<int> armorIndexes = new List<int>();
+    public List<int> consumablesIndexes = new List<int>();
+    public Inventory weaponInventory = new Inventory();
+    public Inventory armorInventory = new Inventory();
+    public Inventory consumablesInventory = new Inventory();
+    [Header("----- Prefabs -----")]
+    public GameObject blankList;
+    public GameObject itemSlot;
 
-    public ToggleGroup shopSlotToggleGroup;
-    public GameObject shopSlotPrefab;
-    public GameObject content;
-    private GameObject shopSlot;
-
-    int xPos = 0;
-    int yPos = 0;
-
-    void OnEnable() {
-        Settings.inNPCMenu = true;
-        GenerateInventory();
-        CreateInventorySlotsInWindow();
-    }
-
-    void OnDisable() {
-        Settings.inNPCMenu = false;
-    }
-
-    void GenerateInventory() {
-        inventory.Clear();
-
-        for (int i = 0; i < itemIndexes.Length; i++) {
-            if (itemIndexes[i] < GameManager.staticItemList.Count && itemIndexes[i] >= 0) {
-                inventory.Add(GameManager.staticItemList[itemIndexes[i]]);
-            }
+    void Update() {
+        if (Input.GetKeyDown(Settings.accessKey)) {
+            //gameObject.SetActive(false);
         }
     }
 
-    void CreateInventorySlotsInWindow() {
-        for (int i = 0; i < inventory.Count; i++) {
-            ISObject item = inventory[i];
-            #region Positioning and Organizing
-            shopSlot = Instantiate(shopSlotPrefab);
-            shopSlot.name = (i + 1).ToString();
-            shopSlot.GetComponent<Toggle>().group = shopSlotToggleGroup;
-            shopSlot.transform.SetParent(content.transform);
-            shopSlot.GetComponent<RectTransform>().localPosition = new Vector3(xPos, yPos, 0);
-            yPos -= (int) shopSlot.GetComponent<RectTransform>().rect.height;
-            #endregion
-            #region Details
-            Image[] images = shopSlot.GetComponentsInChildren<Image>();
-            foreach (Image image in images) {
-                GameObject attribute = image.gameObject;
-                if (attribute.name == "Item Sprite") { // Check if working later
-                    image.sprite = item.icon;
-                    break;
-                }
-            }
-            Text[] texts = shopSlot.GetComponentsInChildren<Text>();
-            foreach (Text text in texts) {
-                GameObject attribute = text.gameObject;
-                if (attribute.name == "Item Name") {
-                    text.text = item.name;
-                } else if (attribute.name == "Item Rarity") {
-                    text.text = item.quality.name;
-                    text.color = item.quality.color;
-                }
-            }
-            #endregion
+    GameObject weaponObject;
+    GameObject armorObject;
+    GameObject consumablesObject;
+
+    public void Awake() {
+        GenerateInventory();
+    }
+
+    public void CreateList() {
+        if (blankList == null)
+            return;
+
+        int openInventories = 0;
+
+        if (weaponInventory.GetSlotsFilled() > 0) {
+            weaponObject = Instantiate(blankList);
+            openInventories++;
+        }
+        if (armorInventory.GetSlotsFilled() > 0) {
+            armorObject = Instantiate(blankList);
+            openInventories++;
+        }
+        if (consumablesInventory.GetSlotsFilled() > 0) {
+            consumablesObject = Instantiate(blankList);
+            openInventories++;
+        }
+
+        Transform GUIComponents = GameObject.Find("GUI Components").transform;
+
+        if (weaponInventory.GetSlotsFilled() > 0) {
+            weaponObject.name = "Weapon Store";
+            //weaponObject.transform.SetParent(GUIComponents);
+            weaponObject.GetComponent<InventoryListWindow>().SetupList(weaponInventory, itemSlot, new Vector2(300, -1), new Vector2(0.5f, 0.5f), 0, 0, true);
+        }
+        if (armorInventory.GetSlotsFilled() > 0) {
+
+        }
+        if (consumablesInventory.GetSlotsFilled() > 0) {
+
+        }
+    }
+
+    void GenerateInventory() {
+        weaponInventory.Clear();
+        armorInventory.Clear();
+        consumablesInventory.Clear();
+
+        for (int i = 0; i < weaponDb.Count; i++) {
+            if (weaponIndexes.Contains(i))
+                weaponInventory.AddItem(weaponDb.Get(i));
+        }
+        for (int i = 0; i < armorDb.Count; i++) {
+            if (armorIndexes.Contains(i))
+                armorInventory.AddItem(armorDb.Get(i));
+        }
+        for (int i = 0; i < consumablesDb.Count; i++) {
+            if (consumablesIndexes.Contains(i))
+                consumablesInventory.AddItem(consumablesDb.Get(i));
         }
     }
 }

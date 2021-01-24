@@ -20,7 +20,7 @@ public class Attack : MonoBehaviour {
 
 
     void Update() {
-        if (!Settings.paused && !Settings.inInventory && !Settings.inNPCMenu) {
+        if (!Settings.paused) {
             if (Input.GetKeyDown(attackKey)) {
                 CheckAttack();
             }

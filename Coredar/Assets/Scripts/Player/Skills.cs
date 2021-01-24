@@ -35,14 +35,14 @@ public struct Skill {
 
 public static class Stats {
     public static Stat health       = new Stat("Health",          100);
+    public static Stat invSpace     = new Stat("Inventory Space", 100);
     public static Stat defence      = new Stat("Defence",          20);
-    public static Stat damage       = new Stat("Damage",            1);
+    public static Stat strength     = new Stat("Strength",          1);
     public static Stat speed        = new Stat("Speed",             1);
     public static Stat dodgeChance  = new Stat("Dodge Chance",      1);
     public static Stat theiving     = new Stat("Theiving",          1);
     public static Stat critChance   = new Stat("Crit Chance",       1);
     public static Stat trackingDist = new Stat("Stealth",           1);
-    public static Stat invSpace     = new Stat("Inventory Space", 100);
 }
 
 public struct Stat {

@@ -7,8 +7,9 @@ using Coredar.ItemSystem;
 public class PlayerInventory : MonoBehaviour {
 
     Inventory inventory;
-    public GameObject playerInventoryList;
-    PlayerInventoryListWindow inventoryListWindow;
+    public GameObject itemSlotPrefab;
+    [HideInInspector]
+    public InventoryListWindow inventoryListWindow;
     #region Equipment definition
     [SerializeField] ISArmor helmet;
     [SerializeField] ISArmor chestplate;
@@ -16,10 +17,6 @@ public class PlayerInventory : MonoBehaviour {
     [SerializeField] ISArmor boots;
     [SerializeField] ISWeapon weapon;
     #endregion
-
-    private void Start() {
-        inventoryListWindow = playerInventoryList.GetComponent<PlayerInventoryListWindow>();
-    }
 
     public PlayerInventory() {
         helmet = null;
@@ -29,6 +26,17 @@ public class PlayerInventory : MonoBehaviour {
         weapon = null;
         //
         inventory = new Inventory();
+        //
+        /*
+        ISObject temp = new ISObject();
+        temp.name = "Dame Tu Cosita";
+        temp.quality = new ISQuality("AAH AAH", Color.red);
+        inventory.AddItem(temp);
+        */
+    }
+
+    public void SetWindowDetails() {
+        inventoryListWindow.SetupList(inventory, itemSlotPrefab, new Vector2(-1, -1), new Vector2(0.5f, 0.5f), 0, 0, true);
     }
 
     public void EquipArmor(int slot) {

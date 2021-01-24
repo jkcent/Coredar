@@ -6,11 +6,10 @@ using UnityEngine;
 public static class Settings {
     #region Static Booleans
     public static bool paused = false;
-    public static bool inInventory = false;
-    public static bool inNPCMenu = false;
     #endregion
     #region Values
     public static float sensitivity = 0.65f; // 0.01 - 2 (* 100 in the menus)
+    public static int zoomSpeed = 1; // 1 - 100
     #endregion
     #region KeyCodes
     public static KeyCode jumpKey = KeyCode.Space;
